@@ -29,17 +29,23 @@ const Signup = () => {
   };
 
   const inputHandler = (e) => {
-    e.preventDefault();
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
   };
-  console.log(input);
+
+  const sumbitForm = (e) => {
+    e.preventDefault();
+    if (input.psw === input.pswRepeat) {
+      console.log(input);
+    }
+  };
+
   return (
     <>
       <div className="signup-form">
-        <form className="modal-content" action="/action_page.php">
+        <form className="modal-content" onSubmit={sumbitForm}>
           <div className="container">
             <h1 className="my-1">Sign Up</h1>
             <p>Please fill in this form to create an account.</p>
@@ -73,6 +79,8 @@ const Signup = () => {
               <input
                 type={pswToggle.showPsw ? "text" : "password"}
                 placeholder="Enter Password"
+                minLength={6}
+                maxLength={12}
                 name="psw"
                 id="psw"
                 required
@@ -98,6 +106,8 @@ const Signup = () => {
               <input
                 type={pswToggle.showRepeatPsw ? "text" : "password"}
                 placeholder="Repeat Password"
+                minLength={6}
+                maxLength={12}
                 name="pswRepeat"
                 id="pswRepeat"
                 required
@@ -115,6 +125,11 @@ const Signup = () => {
                 )}
               </span>
             </div>
+            {input.psw != input.pswRepeat && input.pswRepeat ? (
+              <p className="text-bg-danger p-1 ">password do not match</p>
+            ) : (
+              ""
+            )}
 
             <div className="clearfix">
               <button type="button" className="cancelbtn">
