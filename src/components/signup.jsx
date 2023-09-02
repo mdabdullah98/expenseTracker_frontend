@@ -1,8 +1,13 @@
 import { useState } from "react";
-
 import "../styles/signup.css";
 import { AiOutlineEyeInvisible, AiFillEye } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUser } from "../store/slices/user";
+
 const Signup = () => {
+  const dispatch = useDispatch();
+  const { status, message } = useSelector((state) => state.user);
+
   const [pswToggle, setPswToggle] = useState({
     showPsw: false,
     showRepeatPsw: false,
@@ -35,10 +40,10 @@ const Signup = () => {
     });
   };
 
-  const sumbitForm = (e) => {
+  const sumbitForm = async (e) => {
     e.preventDefault();
     if (input.psw === input.pswRepeat) {
-      console.log(input);
+      dispatch(signupUser(input));
     }
   };
 
@@ -84,14 +89,15 @@ const Signup = () => {
                 name="psw"
                 id="psw"
                 required
+                autoComplete="new-password"
                 onChange={inputHandler}
               />
               <span className={`${input.psw ? "check-psw" : ""}`}>
                 {input.psw ? (
                   pswToggle.showPsw ? (
-                    <AiOutlineEyeInvisible onClick={ShowPswHandler} />
-                  ) : (
                     <AiFillEye onClick={ShowPswHandler} />
+                  ) : (
+                    <AiOutlineEyeInvisible onClick={ShowPswHandler} />
                   )
                 ) : (
                   ""
@@ -111,14 +117,15 @@ const Signup = () => {
                 name="pswRepeat"
                 id="pswRepeat"
                 required
+                autoComplete="new-password"
                 onChange={inputHandler}
               />
               <span className={`${input.pswRepeat ? "check-psw" : ""}`}>
                 {input.pswRepeat ? (
                   pswToggle.showRepeatPsw ? (
-                    <AiOutlineEyeInvisible onClick={ShowRepeatPswHandler} />
-                  ) : (
                     <AiFillEye onClick={ShowRepeatPswHandler} />
+                  ) : (
+                    <AiOutlineEyeInvisible onClick={ShowRepeatPswHandler} />
                   )
                 ) : (
                   ""
@@ -132,13 +139,15 @@ const Signup = () => {
             )}
 
             <div className="clearfix">
-              <button type="button" className="cancelbtn">
+              {/* <button type="button" className="cancelbtn">
                 Cancel
-              </button>
+              </button> */}
               <button type="submit" className="signupbtn">
                 Sign Up
               </button>
             </div>
+            <p className="status">{status}</p>
+            <p className="message">{message}</p>
           </div>
         </form>
       </div>
