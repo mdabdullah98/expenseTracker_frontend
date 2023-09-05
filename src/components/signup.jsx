@@ -73,7 +73,7 @@ const Signup = () => {
               type="text"
               placeholder="Enter Email"
               name="email"
-              id="email"
+              id="email "
               required
               onChange={inputHandler}
             />
