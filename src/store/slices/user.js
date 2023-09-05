@@ -22,9 +22,14 @@ const userSlice = createSlice({
   initialState: {
     status: "",
     message: "",
+    token: null,
   },
 
-  reducers: {},
+  reducers: {
+    tokenLoader: (state, payload) => {
+      state.token = payload;
+    },
+  },
   extraReducers: {
     [signupUser.pending]: (state) => {
       state.status = "sending...";
@@ -36,10 +41,11 @@ const userSlice = createSlice({
       }, 1800);
     },
     [signupUser.rejected]: (state, payload) => {
-      state.loading = "";
+      state.status = "failed";
       state.message = payload.error.message;
     },
   },
 });
 
+export const { tokenLoader } = userSlice.actions;
 export default userSlice.reducer;

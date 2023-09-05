@@ -1,8 +1,9 @@
 import { useState } from "react";
-import "../styles/signup.css";
 import { AiOutlineEyeInvisible, AiFillEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser } from "../store/slices/user";
+import { NavLink } from "react-router-dom";
+import "../styles/signup.css";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -144,6 +145,12 @@ const Signup = () => {
               </button> */}
               <button type="submit" className="signupbtn">
                 Sign Up
+              </button>
+              {/*  already have an acount login */}
+
+              <p>have already have an account login ?</p>
+              <button type="button" className="signupbtn">
+                <NavLink to={"/user/login"}>Login</NavLink>
               </button>
             </div>
             <p className="status">{status}</p>
