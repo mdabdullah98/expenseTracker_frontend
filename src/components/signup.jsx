@@ -2,12 +2,13 @@ import { useState } from "react";
 import { AiOutlineEyeInvisible, AiFillEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser } from "../store/slices/user";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/signup.css";
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { status, message } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const { status, message, token } = useSelector((state) => state.user);
 
   const [pswToggle, setPswToggle] = useState({
     showPsw: false,
@@ -45,6 +46,9 @@ const Signup = () => {
     e.preventDefault();
     if (input.psw === input.pswRepeat) {
       dispatch(signupUser(input));
+    }
+    if (token) {
+      navigate("/user/login");
     }
   };
 
@@ -124,9 +128,15 @@ const Signup = () => {
               <span className={`${input.pswRepeat ? "check-psw" : ""}`}>
                 {input.pswRepeat ? (
                   pswToggle.showRepeatPsw ? (
-                    <AiFillEye onClick={ShowRepeatPswHandler} />
+                    <AiFillEye
+                      onClick={ShowRepeatPswHandler}
+                      className="eye-icon"
+                    />
                   ) : (
-                    <AiOutlineEyeInvisible onClick={ShowRepeatPswHandler} />
+                    <AiOutlineEyeInvisible
+                      onClick={ShowRepeatPswHandler}
+                      className="eye-icon"
+                    />
                   )
                 ) : (
                   ""
@@ -138,23 +148,21 @@ const Signup = () => {
             ) : (
               ""
             )}
-
+            <p className="status">{status}</p>
+            <p className="message">{message}</p>
             <div className="clearfix">
-              {/* <button type="button" className="cancelbtn">
-                Cancel
-              </button> */}
               <button type="submit" className="signupbtn">
                 Sign Up
               </button>
               {/*  already have an acount login */}
-
               <p>have already have an account login ?</p>
               <button type="button" className="signupbtn">
                 <NavLink to={"/user/login"}>Login</NavLink>
               </button>
+              <button type="button" className="cancelbtn">
+                <NavLink to={"/"}>Cancel</NavLink>
+              </button>
             </div>
-            <p className="status">{status}</p>
-            <p className="message">{message}</p>
           </div>
         </form>
       </div>

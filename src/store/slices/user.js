@@ -35,7 +35,7 @@ const userSlice = createSlice({
       state.status = "sending...";
     },
     [signupUser.fulfilled]: (state) => {
-      state.status = "success";
+      state.status = "successfully singed up ";
       setTimeout(() => {
         window.location.reload();
       }, 1800);

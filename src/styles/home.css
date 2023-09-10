@@ -1,0 +1,69 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main-expense-div {
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 99;
+}
+.main-expense-div h1 {
+  text-transform: capitalize;
+}
+.logout-button {
+  cursor: pointer;
+}
+.menu {
+  display: none;
+}
+
+@media screen and (max-width: 650px) {
+  .main-expense-div {
+    width: 100%;
+    padding: 1rem;
+    background: rgb(240, 237, 237);
+    border-radius: 0.4rem;
+    transform: translateY(-50rem);
+    max-height: 0;
+  }
+  .main-expense-div.active {
+    animation: menu 1s forwards cubic-bezier(0.075, 0.82, 0.165, 1);
+    max-height: 20%;
+  }
+  @keyframes menu {
+    0% {
+      transform: translateY(-30rem);
+    }
+
+    100% {
+      transform: translateY(0rem);
+    }
+  }
+  .main-expense-div .brand-logo {
+    display: flex;
+    flex-direction: column;
+  }
+  .main-expense-div .brand-logo .content {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .main-expense-div .brand-logo .content img {
+    margin: 1.5rem 0;
+  }
+
+  .menu {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 1rem 0;
+    padding: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 100;
+  }
+}

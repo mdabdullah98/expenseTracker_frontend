@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../styles/signup.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineEyeInvisible, AiFillEye } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { tokenLoader } from "../store/slices/user";
 import axios from "axios";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [pswToggle, setPswToggle] = useState(false);
   const [status, setStatus] = useState(null);
@@ -37,22 +36,22 @@ const Login = () => {
 
       const res = await axios.post("http://localhost:8080/user/login", input);
 
-      if (res.data === "password do not match") {
-        setStatus("password do not match");
-      } else if (res.data === "email does not exist please signup") {
-        setStatus("Email does not exist please signup");
-        setTimeout(() => {
-          navigate("/user/signup");
-        }, 3000);
-      } else {
+      if (res.data) {
         setStatus("login succesfully");
-        dispatch(tokenLoader(res.data));
         sessionStorage.setItem("token", JSON.stringify(res.data));
-        navigate("/home");
+        dispatch(tokenLoader(res.data));
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
       }
     } catch (err) {
-      console.log(err);
-      setStatus(err.response.data);
+      if (
+        err.response.status === 401 ||
+        err.response.status === 404 ||
+        err.response.status === 500
+      ) {
+        setStatus(err.response.data);
+      }
     }
   };
   return (
@@ -60,7 +59,7 @@ const Login = () => {
       <div className="signup-form">
         <form className="modal-content" onSubmit={loginHandler}>
           <div className="container">
-            <p className="alert-danger">{status}</p>
+            <p className="login-alert">{status}</p>
             <h1 className="my-1">Login</h1>
             <label htmlFor="email">
               <b>Email</b>
@@ -71,6 +70,7 @@ const Login = () => {
               name="email"
               id="email"
               required
+              autoComplete="on"
               onChange={inputHandler}
             />
 
@@ -107,6 +107,9 @@ const Login = () => {
               <p>do not have an account signup ?</p>
               <button type="button" className="signupbtn">
                 <NavLink to={"/user/signup"}>Signup</NavLink>
+              </button>
+              <button type="button" className="cancelbtn">
+                <NavLink to={"/"}>Cancel</NavLink>
               </button>
             </div>
           </div>
