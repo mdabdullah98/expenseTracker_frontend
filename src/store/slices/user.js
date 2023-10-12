@@ -1,14 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "../../utils/utils";
 
 export const signupUser = createAsyncThunk(
   "user/signupUser",
   async (SignupInput) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8080/user/signup",
-        SignupInput
-      );
+      const res = await axios.post(BASE_URL + "user/signup", SignupInput);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -36,9 +34,10 @@ const userSlice = createSlice({
     },
     [signupUser.fulfilled]: (state) => {
       state.status = "successfully singed up ";
+
       setTimeout(() => {
-        window.location.reload();
-      }, 1800);
+        state.status = "";
+      }, 1500);
     },
     [signupUser.rejected]: (state, payload) => {
       state.status = "failed";

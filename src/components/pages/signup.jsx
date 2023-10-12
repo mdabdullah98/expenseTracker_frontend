@@ -1,14 +1,21 @@
 import { useState } from "react";
+
+import "../../styles/signup.css";
+
 import { AiOutlineEyeInvisible, AiFillEye } from "react-icons/ai";
+
 import { useDispatch, useSelector } from "react-redux";
-import { signupUser } from "../store/slices/user";
+
+import { signupUser } from "../../store/slices/user";
+
 import { NavLink, useNavigate } from "react-router-dom";
-import "../styles/signup.css";
 
 const Signup = () => {
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const { status, message, token } = useSelector((state) => state.user);
+
+  const { status, message } = useSelector((state) => state.user);
 
   const [pswToggle, setPswToggle] = useState({
     showPsw: false,
@@ -44,10 +51,9 @@ const Signup = () => {
 
   const sumbitForm = async (e) => {
     e.preventDefault();
+
     if (input.psw === input.pswRepeat) {
       dispatch(signupUser(input));
-    }
-    if (token) {
       navigate("/user/login");
     }
   };
@@ -55,10 +61,11 @@ const Signup = () => {
   return (
     <>
       <div className="signup-form">
+        <p className="">{status}</p>
+        <p className="message">{message}</p>
         <form className="modal-content" onSubmit={sumbitForm}>
           <div className="container">
-            <h1 className="my-1">Sign Up</h1>
-            <p>Please fill in this form to create an account.</p>
+            <h3 className="my-1">Sign Up</h3>
             <label htmlFor="username">
               <b>Username</b>
             </label>
@@ -74,7 +81,7 @@ const Signup = () => {
               <b>Email</b>
             </label>
             <input
-              type="text"
+              type="email"
               placeholder="Enter Email"
               name="email"
               id="email "
@@ -143,13 +150,16 @@ const Signup = () => {
                 )}
               </span>
             </div>
-            {input.psw != input.pswRepeat && input.pswRepeat ? (
-              <p className="text-bg-danger p-1 ">password do not match</p>
+            {input.pswRepeat ? (
+              input.psw != input.pswRepeat ? (
+                <p className="text-bg-danger p-1 ">password do not match</p>
+              ) : (
+                ""
+              )
             ) : (
               ""
             )}
-            <p className="status">{status}</p>
-            <p className="message">{message}</p>
+
             <div className="clearfix">
               <button type="submit" className="signupbtn">
                 Sign Up
